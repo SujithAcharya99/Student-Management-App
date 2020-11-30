@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Student-Management App</title>
+     <link rel="stylesheet" href="/css/styles.css">
+    
+
+</head>
+<body>
+       <div class="main-content">
+         {{>header}}
+    <h1>Edit User</h1>
+                 <form action="/user/edit/{{user.id}}" method="POST">
+                   <label >Name</label>
+                    <input id="name" type="text" name="name" placeholder="Name" value={{user.name}} required>
+                    <label >Email </label>
+                    <input id="email" type="text" name="email" placeholder="email" value={{user.email}} required>
+                  
+                     <label >age </label>
+                    <input id="age" type="text" name="age" placeholder="age" value={{user.age}} required>
+                    <label >roll </label>
+                    <input id="roll" type="text" name="roll" placeholder="roll" value={{user.roll}} required>
+                   
+                    <button type="submit" >SUBMIT</button>
+                </form>
+
+     {{>footer}}
+     </div>
+</body>
+
+</html>
