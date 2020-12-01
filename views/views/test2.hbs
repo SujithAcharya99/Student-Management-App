@@ -4,18 +4,22 @@
 
 <head>
 <title>Student App</title>
+<link rel="stylesheet" href="style.css">
 
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 <body class="bg-info">
     
     <div class="row">
-    </div>
+         <div class="col-md-6 offset-md-3" style="background-color: #fff;margin-top: 25px;padding:20px;">
+    
     <h1>Student Dashboard</h1>
 <h3> Student Profile</h3> 
+<h3><a class="btn btn-secondary" href="/student/exam/{{student.id}}"><i class="fa fa-book"></i>Take Test</a></h3>
 <table class="table.table-striped">
     <thead>
         <tr>
@@ -40,9 +44,11 @@
         {{/each}}
         
     </tbody>
-</table>
-<a class="btn btn-secondary" href="/" style="color: rgb(0, 0, 0);">Logout</a>
-
+    </table>
+    <a class="btn btn-secondary" href="/" style="color: rgb(0, 0, 0);">Logout</a>
+    </div>
+  
+</div>
 </body>
 
 </html>
