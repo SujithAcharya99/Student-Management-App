@@ -17,8 +17,6 @@ router.use(bodyparser.urlencoded({
     extended: true
 }));
 
-// app.set('views', viewsPath);
-
 router.get('/', async (req, res) => {
     res.render('index',{
         title : 'Login Page',
@@ -28,7 +26,6 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/test', async (req, res) => {
-
     
     res.render('test',{
         title : 'Login Page',
@@ -37,16 +34,6 @@ router.get('/test', async (req, res) => {
  
 })
 
-// app.get('/test2', async (req, res) => {
-//     res.render('test2',{
-//         title : 'Login Page',
-//         body : 'Sujith S'
-//     });
- 
-// })
-
-
-
 router.get('/about', (req, res) => {
     res.render('about',{
         title : 'About Me',
@@ -54,51 +41,7 @@ router.get('/about', (req, res) => {
     });
 })
 
-// app.post('/test', async (req, res) => {
-
-//     const email = await req.body;
-
-//     console.log(email);
-//   res.send('success')
-// })
-
-//************************Login*****************88*8 */
-// router.get('/login', (req, res) => {
-
-//     res.render('loginandregister');
-// })
-
-
-
  router.post('/login', async (req, res) => {
-
-//     console.log('inside router', req);
-
-//     res.send(req.body);
-//     // try {
-    //     // const email = req.body.email;
-    //     // console.log(email)
-    //     const admin = await Admin.findOne({email: req.body.email, password: req.body.password});
-    //     if (admin) {
-           
-    //         return res.send('welcome admin');
-    //     }
-        
-    //     const user = await User.findOne({email: req.body.email, password: req.body.password});
-    //     // const token = await user.generateAuToken();
-    //     if (!user) {
-    //         return  res.send({
-    //             error : 'worng credentials'
-    //         })
-    //     } else {
-    //         // res.send(user);
-    //         res.redirect('/users');
-
-    //     }
-        
-    // } catch (e) {
-    //     res.status(400).send();
-    // }
     try {
          console.log(req.body)
         const admin = await Admin.findOne({email: req.body.email, password: req.body.password});
@@ -125,8 +68,6 @@ router.get('/about', (req, res) => {
                 name: 'Sujith S'
              });
          } else if(user.roll === 'student'){
-            // console.log('in side student login logic')
-            // console.log(req.body)
             const student = await Student.findByCredentials(req.body.email, req.body.password);
             const token = await student.generateAuToken();
             // console.log(student)
@@ -143,8 +84,6 @@ router.get('/about', (req, res) => {
             // console.log(req.body)
             const teacher = await Teacher.findByCredentials(req.body.email, req.body.password);
             const token = await teacher.generateAuToken();
-            //  console.log('ready to render...');
-            //  console.log(teacher);
              const student = await Student.find({});
              if (!teacher) {
                 return res.status(404).send();
@@ -153,38 +92,19 @@ router.get('/about', (req, res) => {
                 title : 'Teacher Page',
                  body : teacher.name,
                  teacher,
-                //  subject: teacher.subjects_taught,
                 student
-                // teacher
-                
             });
          }
-        //  console.log(user)
-        //  res.send({ user, token });
-    //     Us.find({}, {}, function(e, docs) {
 
-    //         res.render('user-list', {'userlist' : docs});
-
-    //   });
-      
-        //res.send(user.roll);
-        // res.redirect('/user')
         }
     } catch (e) {
         res.status(400).send(e);
     }
     
 });
-
-// router.get('/teacher/dashboard', async (req, res) => {
-//     console.log('hello')
-//     res.send('hello')
-// })
 //************************signup****************** */
 
 router.post('/signup', (req,res) => {
-
-    
         const user = new User(req.body)
 
         user.save().then(() =>{
@@ -210,7 +130,6 @@ router.post('/users/logout', auth, async (req, res) => {
     }
 });
 
-
 router.post('/users/logoutAll', auth, async (req, res) => {
     try {
         req.user.tokens = [];
@@ -221,26 +140,11 @@ router.post('/users/logoutAll', auth, async (req, res) => {
     }
 });
 
-//************************user not assigned Page********* */
-
-// app.get('/user', (req, res) => {
-//     // const name = new User.findOne({email: req.body.email})
-//     // console.log(res.send(req.user));
-//     res.render('/notAssigned',{
-//         title : 'Home Page',
-//         user: 'user',
-//         message : 'Pls wait for Admin to assigned'
-//      });
-
-// })
-
-
 
 router.get('/user/me', auth, async (req, res) => {
     console.log('inside /users')
     res.send(req.user);
 });
-
 
 //*************************Admin***************** */
 router.get('/admin/dashboard', async (req, res) => {
@@ -249,11 +153,6 @@ router.get('/admin/dashboard', async (req, res) => {
     // const userTeacher = await User.find({roll: 'teacher'});
     const teacher = await Teacher.find({});
     const user = await User.find({});
-    // console.log( userTeacher.name,  userTeacher.email,  userTeacher.roll, userTeacher.age, userTeacher.password)
-
-//     const teacher = new Student(userTeacher)
-// console.log(userTeacher[0])
-
     res.render('adminDashboard',{
         admin: 'Admin',
         user,
@@ -262,12 +161,9 @@ router.get('/admin/dashboard', async (req, res) => {
 })
 });
 
-
 router.post('/admin', (req, res) => {
     
-
   const admin = new Admin(req.body)
-
 
     admin.save().then(() =>{
         res.status(201).send(admin)
@@ -318,8 +214,6 @@ router.get('/student/exam/:id', async (req, res) => {
         if (!testdata) {
             res.status(400).send()
         }
-        // console.log(testdata[0].questions)
-        // let question = []
     const question = testdata.questions[0].mcq_question;
         const mcq = testdata.questions;
      console.log(mcq)
@@ -328,25 +222,10 @@ router.get('/student/exam/:id', async (req, res) => {
             question,
             mcq,
             testdata
-        })
-        // const data = {
-        //     code: 42,
-        //     items: [{
-        //         id: 1,
-        //         name: 'foo'
-        //     }, {
-        //         id: 2,
-        //         name: 'bar'
-        //     }]
-        // };
-        // console.log(data)
-        // console.log(testdata)
-        //  res.status(200).send();
-      
+        })      
     }).catch((e) => {
         res.status(500).send(e);
     })
-    // res.render('Exam')
     
 });
 
@@ -364,7 +243,6 @@ router.get('/students/:id', (req, res) => {
     })
 });
 
-
 router.get('/student/edit/:id', async (req, res) => {
     const _id = req.params.id;
     const student = await Student.findById(_id);
@@ -375,8 +253,6 @@ router.get('/student/edit/:id', async (req, res) => {
 
 })
 
-
-
 router.post('/student/edit/:id', async (req, res) => {
     console.log(req.body);
     const _id = req.params.id;
@@ -385,22 +261,13 @@ router.post('/student/edit/:id', async (req, res) => {
     console.log(updates)
     const allowedUpdates = ['name', 'email', 'roll', 'age', 'subject'];
     const isValidUpdate = updates.every((update) => allowedUpdates.includes(update));
-
-
-
     if (!isValidUpdate) {
         return res.status(404).send({ error : 'Invalid Update...!'})
     }
 console.log('validation oki')
     try {
-    //    const user = await User.findOneAndUpdate(email, req.body, { new : true, runValidators: true});
      const student = await Student.findOneAndUpdate({ _id }, req.body, { new: true })
-    //    const user = await User.findById(_id);
-    // console.log(user)
-       
        updates.forEach((update) => student[update] = req.body[update])
-
-    //    await req.user.save();
 
         if (!student) {
             return res.status(404).send();
@@ -418,8 +285,7 @@ console.log('validation oki')
     res.render('newTeacher')
 })
 
- router.post('/teacher', (req, res) => {
-    
+ router.post('/teacher', (req, res) => { 
     const teacher = new Teacher(req.body)
     console.log(req.body)
 
@@ -430,8 +296,6 @@ console.log('validation oki')
         res.status(400).send(e);
     })
 });
-
-
 
 router.get('/teachers', (req, res) => {
     Teacher.find({}).then((teacher) => {
@@ -451,18 +315,7 @@ router.get('/teacher/userEdit/:id', async (req, res) => {
 });
 
 router.get('/teacherUserList', async (req, res) => {
-    // const user = await User.find({roll:'not assigned'});
-
-    // if (!user) {
-    //     return res.student(400).send() 
-    // } else if (user.length === 0) {
-    //     return alert("no data found");
-    // }
-    //  else {
-    // res.render('teacherUserList', {
-    //     user,
-    //     name:'Sujith S'
-    // })}
+   
     await User.find({roll:'not assigned'}).then((user) => {
         if (!user) {
             return res.student(400).send() 
@@ -480,34 +333,20 @@ router.get('/teacherUserList', async (req, res) => {
     })
 })
 router.post('/teacher/userEdit/:id', async (req, res) => {
-    // console.log(req.body);
+    
     const _id = req.params.id;
-    // console.log(req.params.id)
     const updates = Object.keys(req.body);
-    // console.log(updates)
     const allowedUpdates = ['name', 'email', 'roll', 'age'];
     const isValidUpdate = updates.every((update) => allowedUpdates.includes(update));
-
-
-
     if (!isValidUpdate) {
         return res.status(404).send({ error : 'Invalid Update...!'})
     }
-// console.log('validation oki')
     try {
-    //    const user = await User.findOneAndUpdate(email, req.body, { new : true, runValidators: true});
      const user = await User.findOneAndUpdate({ _id }, req.body, { new: true })
-    //    const user = await User.findById(_id);
-    // console.log(user)
-       
        updates.forEach((update) => user[update] = req.body[update])
-
-    //    await req.user.save();
-
         if (!user) {
             return res.status(404).send();
         }
-
         res.redirect('/teacherUserList');
 
     } catch (e) {
@@ -525,8 +364,6 @@ router.get('/teacher/edit/:id', async (req, res) => {
 
 })
 
-
-
 router.post('/teacher/edit/:id', async (req, res) => {
     console.log(req.body);
     const _id = req.params.id;
@@ -535,23 +372,14 @@ router.post('/teacher/edit/:id', async (req, res) => {
     console.log(updates)
     const allowedUpdates = ['name', 'email', 'roll', 'age', 'subjects_taught'];
     const isValidUpdate = updates.every((update) => allowedUpdates.includes(update));
-
-
-
     if (!isValidUpdate) {
         return res.status(404).send({ error : 'Invalid Update...!'})
     }
 console.log('validation oki')
     try {
-    //    const user = await User.findOneAndUpdate(email, req.body, { new : true, runValidators: true});
-     const teacher = await Teacher.findOneAndUpdate({ _id }, req.body, { new: true })
-    //    const user = await User.findById(_id);
-    // console.log(user)
-       
+
+     const teacher = await Teacher.findOneAndUpdate({ _id }, req.body, { new: true })    
        updates.forEach((update) => teacher[update] = req.body[update])
-
-    //    await req.user.save();
-
         if (!teacher) {
             return res.status(404).send();
         }
@@ -583,16 +411,11 @@ router.post('/users', (req, res) => {
     });
 });
 
-
-
-
 router.get('/user/delete/:id', async (req, res) => {
 
     const _id = req.params.id;
     console.log(_id)
-
     try {
-        // const user = await User.findByIdAndDelete(req.user._id);
         const user = await User.findById(_id);
         console.log(user)
         if (!user) {
@@ -606,12 +429,9 @@ router.get('/user/delete/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send();
     }
-
-
 });
 
 router.get('/user/edit/:id', async (req, res) => {
-    // console.log(req.params.id)
     const _id = req.params.id;
     const user = await User.findById(_id);
 
@@ -620,94 +440,27 @@ router.get('/user/edit/:id', async (req, res) => {
     });
 });
 
-
-// router.patch('/users/:id', async (req, res) => {
-
-    // router.patch('/users/me', auth, async (req, res) => {
-
 router.post('/user/edit/:id', async (req, res) => {
         console.log(req.body);
         const _id = req.params.id;
         console.log(req.body.roll);
-        // if (req.body.roll === 'student') {
-        //     const student = req.body;
-
-        //     const _id = req.params.id;
-        //     console.log(_id)
-        
-        //     try {
-        //         const user = await User.findById(_id);
-        //         console.log(user)
-        //         if (!user) {
-        //             return res.status(404).send();
-        //         }
-        
-        //         await user.remove();
-                
-        //     } catch (e) {
-        //         res.status(500).send();
-        //     }
-
-
-        //     res.render('newStudentAdmin',{
-        //         student
-        //     })
-            
-        // } else if (req.body.roll === 'teacher') {
-        //     const teacher = req.body;
-
-        //     const _id = req.params.id;
-        //     console.log(_id)
-        
-        //     try {
-        //         const user = await User.findById(_id);
-        //         console.log(user)
-        //         if (!user) {
-        //             return res.status(404).send();
-        //         }
-        
-        //         await user.remove();
-                
-        //     } catch (e) {
-        //         res.status(500).send();
-        //     }
-
-
-            // res.render('newTeacherAdmin',{
-            //     teacher
-        //     })
-        // }
-        
-        // else {
 
             const student = req.body;
             const teacher = req.body;
             const updates = Object.keys(req.body);
-        // console.log(updates)
+
         const allowedUpdates = ['name', 'email', 'roll', 'age'];
         const isValidUpdate = updates.every((update) => allowedUpdates.includes(update));
-    
-
-    
         if (!isValidUpdate) {
             return res.status(404).send({ error : 'Invalid Update...!'})
         }
-    // console.log('validation oki')
         try {
-        //    const user = await User.findOneAndUpdate(email, req.body, { new : true, runValidators: true});
          const user = await User.findOneAndUpdate({ _id }, req.body, { new: true })
-        //    const user = await User.findById(_id);
-        // console.log(user)
-           
+ 
            updates.forEach((update) => user[update] = req.body[update])
-    
-        //    await req.user.save();
-    
             if (!user) {
                 return res.status(404).send();
             }
-    
-            // res.redirect('/admin/dashboard');
 
             if (req.body.roll === 'student') {
                 
@@ -723,17 +476,8 @@ router.post('/user/edit/:id', async (req, res) => {
         } catch (e) {
             res.status(400).send();
         }
-        // }
         
     })
-
-    // app.get('/users', (req, res) => {   
-//     User.find({}).then((user) => {
-//         res.send(user);
-//     }).catch((e) => {
-//         res.status(500).send(e);
-//     })
-// });
 
 //**************************Course****************** */
 router.get('/course', async(req, res) =>{
@@ -787,9 +531,6 @@ router.get('/teacherMcq/:id', async (req,res) => {
     }
 })
 
-// router.get('/mcq', async(req, res) => {
-//     res.render('teacherDashboard');
-// })
 router.post('/mcq', async (req,res) => {
    
     var question= [
@@ -815,33 +556,10 @@ router.post('/mcq', async (req,res) => {
     })
 })
 
-// var personSchema = Schema({
-//     name    : String,
-//     surname : String,
-//     addresses : [{
-//       street: String,
-//       city: String
-//     }]
-  
-//   var addresses= [
-//       {street: 'W Division', city: 'Chicago'},
-//       {street: 'Beekman', city: 'New York'},
-//       {street: 'Florence', city: 'Los Angeles'}
-//   ];
-//   //Saving in Schema
-//   var personData = new personSchema ({
-//     name:'peter',
-//     surname:'bloom',
-//     addresses:addresses  
-//   })
-//   personData.save();
-
 router.post('/test/data', async (req, res) => {
     console.log(req.body)
     res.status(200).send('thank you ')
 })
-
-
 
 //***********************HELP******************** */
 router.get('/help', (req, res) =>{
