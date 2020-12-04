@@ -11,15 +11,20 @@
 </head>
 <body>
        <div class="main-content">
-         {{>header}}
-                 <form action="/login" method="POST">
+         {{!-- {{>header}} --}}
+         <h3>Login as</h3>
+         <a href="/login/admin"><button class="btn"><h2>Admin Login</h2></button></a>
+         <a href="/login/teacher"><button class="btn"><h2>Teacher Login</h2></button></a>
+         <a href="/login/student"><button class="btn"><h2>Student Login</h2></button></a>
+        
+                 {{!-- <form action="/login" method="POST">
                     <label >Email </label>
                     <input id="email" type="text" name="email" placeholder="email" required>
                     <label >Password </label>
                     <input id="password" type="text" name="password" placeholder="password" required>
 
                     <button type="submit" >SUBMIT</button>
-                </form>
+                </form> --}}
     <h1>Sign up</h1>
                  <form action="/signup" method="POST">
                     <label >Name</label>

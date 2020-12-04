@@ -18,18 +18,23 @@
     <div class="col-md-6 offset-md-3" style="background-color: #fff;margin-top: 25px;padding:20px;">
         {{>header}}
         <h3>Name: {{student.name}}</h3>
-    <form action="/test/data" method="post">
+    <form action="/test/data/{{student._id}}" method="post">
         <div>
              
     {{#each testdata.questions}}
-        <h3>1:{{this.mcq_question}} 
-           
-        </h3>
+        <h3>{{this.mcq_question}}  </h3>
+        {{#each this.options}}
+        <input type="radio" name="{{this}}" value="{{this}}">
+        <label for="module.expose">{{this}}</label><br>
+        {{/each}}
+    {{/each}} 
+    </div>
+{{!-- 
         {{#each ../ar}}
         {{!-- <h3>{{this}}</h3> --}}
-
-        <input type="radio" name="{{@index}}" value="{{this}}">
-        <label for="module.expose">{{this}}</label><br>
+{{!-- 
+        <input type="radio" name="{{index}}" value="{{this}}">
+        <label for="module.expose">{{this}}</label><br> --}} 
         {{!-- <input type="radio" id="b1" name="b1" value="module">
         <label for="module">{{this}}</label><br>
         <input type="radio" id="c1" name="c1" value=" module.exports">
@@ -37,9 +42,9 @@
         <input type="radio" id="d1" name="d1" value="All of the above">
         <label for="All of the above">{{this}}</label> --}}
    
-        {{/each}} 
-        {{/each}} 
-         </div>
+        {{!-- {{/each}}  --}}
+        {{!-- {{/each}}  --}}
+         
         {{!-- <div>
         <h3>2 Which statement executes the code of sample.js file?</h3>
         <input type="radio" id="a2" name="a2" value="nodejs sample.js">
