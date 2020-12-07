@@ -18,7 +18,8 @@
     
          {{>header}}
     <h1>Create Questions for test</h1>
-                 <form action="/mcq" method="POST">
+    {{!-- {{teacher_id}} --}}
+                 <form action="/mcq/{{teacher_id}}" method="POST">
                     <label >studentName</label>
                     <input id="studentName" type="text" name="studentName" placeholder="studentName" required>
                     <label >Subject </label>
