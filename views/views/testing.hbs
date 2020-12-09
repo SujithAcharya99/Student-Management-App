@@ -18,15 +18,7 @@
             <a href="/student/dashboard/{{_id}}"> <button type="button" class="btn btn-lg btn-block  btn-custom ">Go To Dashboard</button></a>
 
 </ul>
-        {{!-- /<div class="card-body bg-white mt-0 shadow"> --}}
-
-  {{!-- <ul class="list-unstyled mb-5 position-relative">
-        <h3><li><b>Student Name: </b>{{course.studentName}}</li></h3>
-        <h3><li><b>Subject: </b>{{course.subject}}</li></h3>
-        <h3><li><b>Teacher Name: </b>{{course.teacherName}}</li></h3>
-</ul>  --}}
-
-        {{!-- </div> --}}
+        
        
                     
               
@@ -36,10 +28,23 @@
 </div>
 {{!-- {{_id}} --}}
 
-       
 
-<script>
-   
+{{!-- 
+<div class="box">
+	<svg>
+		<circle cx="60" cy="60" r="50">
+
+		</circle>
+	</svg>
+	<div class="counter">0</div>
+	<div class="stop"></div>
+	<div class="progress">Progess Bar</div>
+
+</div>
+        --}}
+
+<script type="text/javascript">
+ 
 var forEach = function (array, callback, scope) {
 	for (var i = 0; i < array.length; i++) {
 		callback.call(scope, i, array[i]);
@@ -58,6 +63,24 @@ window.onload = function () {
 		value.querySelector(".value").innerHTML = percent + "%";
 	});
 };
+/*
+var a = 0;
+var run = setInterval(frame, 50);
+function frame(){
+	a = a + 1;
+	if(a == 100){
+		clearInterval(run);
+	} else {
+		var counter = document.querySelector(".counter");
+		counter.textContent = a + "%";
+	}
+}
+
+setTimeout(stopPoint, 5000);
+function stopPoint(){
+	var stop = document.querySelector(".stop");
+	stop.style.didplay = "block"
+}*/
 
 </script>
     {{!-- {{>footer}} --}}

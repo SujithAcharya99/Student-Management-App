@@ -12,27 +12,13 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<link rel="stylesheet" href="/css/radial.css">
- 
-    
-
 </head>
 <body>
        
-    
-<div class="container-fluid bg-gradient p-5">
+ <div class="container-fluid bg-gradient p-5">
       <div class="row m-auto text-center w-75">
         <div class="col-4 princing-item green">
           <div class="pricing-divider ">
-             <div id="wrapper" class="center">
-	<svg class="progress blue noselect" data-progress="{{score}}" x="0px" y="0px" viewBox="0 0 80 80">
-		<path class="track" d="M5,40a35,35 0 1,0 70,0a35,35 0 1,0 -70,0" />
-		<path class="fill" d="M5,40a35,35 0 1,0 70,0a35,35 0 1,0 -70,0" />
-		<text class="value" x="50%" y="55%">0%</text>
-		<text class="text" x="50%" y="115%">Blue</text>
-	</svg>
-	
-</div>
               <h3 class="text-light">Score</h3>
             <h4 class="my-0 display-2 text-light font-weight-normal mb-3"><span class="h3"></span> {{score}} <span class="h5"></span></h4>
              <svg class='pricing-divider-img' enable-background='new 0 0 300 100' height='100px' id='Layer_1' preserveAspectRatio='none' version='1.1' viewBox='0 0 300 100' width='300px' x='0px' xml:space='preserve' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg' y='0px'>
@@ -47,9 +33,6 @@
         </svg>
           </div>
 
-
-         
-
           <div class="card-body bg-white mt-0 shadow">
             <ul class="list-unstyled mb-5 position-relative">
               <li><b>Student Name: </b>{{course.studentName}}</li>
@@ -61,31 +44,10 @@
             {{!-- <button type="button" class="btn btn-lg btn-block  btn-custom ">Go To Dashboard</button> --}}
           </div>
         </div>
-                  
+
       </div>
     </div>
-<script>
-   
-var forEach = function (array, callback, scope) {
-	for (var i = 0; i < array.length; i++) {
-		callback.call(scope, i, array[i]);
-	}
-};
-window.onload = function () {
-	var max = -219.99078369140625;
-	forEach(document.querySelectorAll(".progress"), function (index, value) {
-		percent = value.getAttribute("data-progress");
-		value
-			.querySelector(".fill")
-			.setAttribute(
-				"style",
-				"stroke-dashoffset: " + ((100 - percent) / 100) * max
-			);
-		value.querySelector(".value").innerHTML = percent + "%";
-	});
-};
 
-</script>
 
 {{>footer}}
 </body>
