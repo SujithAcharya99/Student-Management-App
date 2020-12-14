@@ -59,15 +59,11 @@ const studentSchema = new mongoose.Schema({
 
 // const Student = mongoose.model('Student', adminSchema);
 
-
-
 studentSchema.methods.generateAuToken = async function () {
     const student = this;
     // console.log('inside token')
     // console.log(student)
-
     // const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse')
-
     const token = jwt.sign({ _id: student._id.toString() }, 'thisismynewcourse')
     // console.log(token)
     student.tokens = student.tokens.concat({ token });
@@ -79,19 +75,14 @@ studentSchema.methods.generateAuToken = async function () {
 studentSchema.statics.findByCredentials = async (email, password) => {
     const student = await Student.findOne({ email });
     // console.log(student)
-    // console.log('inside module')
-
+    // console.log('inside module'
     if (!student) {
         throw new Error('Unable to Login');
     }
-    
-
     const isMatch = await bcrypt.compare(password, student.password);
-
     if (!isMatch) {
         throw new Error('Unable is login');
     }
-    
     return student;
 };
 
@@ -107,10 +98,6 @@ studentSchema.pre('save',async function (next) {
     next();
 });
 
-
-
-
 const Student = mongoose.model('Student', studentSchema);
-
 
 module.exports = Student;
