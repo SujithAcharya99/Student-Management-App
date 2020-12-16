@@ -1,4 +1,6 @@
+// console.log('inside chat.js');
 const socket = io();
+// io();
 
 //Elements
 const $messageForm = document.querySelector('#message-form');
@@ -6,7 +8,6 @@ const $messageFormInput = $messageForm.querySelector('input');
 const $messageFormButton = $messageForm.querySelector('button');
 const $sendLocationButton = document.querySelector('#send-location');
 const $messages = document.querySelector('#messages');
-
 
 //templetes
 const messageTemplate = document.querySelector('#message-template').innerHTML;
@@ -40,7 +41,6 @@ const autoscroll = () => {
   if (containerHeight - newMessageHeight <= scrollOffset) {
     $messages.scrollTop = $messages.scrollHeight;
   }
-
 }
 
 socket.on('message', (msg) => {
@@ -106,15 +106,12 @@ $messageForm.addEventListener('submit', (e) => {
     $messageFormButton.removeAttribute('disabled');
     $messageFormInput.value = '';
     $messageFormInput.focus()
-
     if (error) {
       return console.log(error);
     }
-
     console.log('message delivered');
   });
 })
-
 
 // document.querySelector('#send-location').addEventListener('click' , () => {
 
@@ -135,11 +132,12 @@ $sendLocationButton.addEventListener('click', () => {
       console.log('Loction Shared');
     });
   })
+
 })
 
 socket.emit('join', { username, room }, (error) => {
   if (error) {
     alert(error);
-    location.href = 'chat_index.js';
+    location.href = '/';
   }
 })
