@@ -2,8 +2,8 @@
 <html>
 
 <head>
-  <title>Chat App</title>
-  <link rel="icon" href="/img/logo1.png">
+  <title>Student-Manager App</title>
+  <link rel="icon" href="/photo/logo.png">
   <link rel="stylesheet" href="/css/styles.min.css">
 </head>
 
@@ -11,7 +11,7 @@
 
   <div class="chat">
     <div id="sidebar" class="chat__sidebar">
-
+      {{!-- {{user.room}} --}}
     </div>
     <div class="chat__main">
 
@@ -39,7 +39,7 @@
   <script id="message-template" type="text/html">
     
             <div class="message">
-                <p>{{user}}
+                <p>
                     <span class="message__name">{{username}}</span>
                     <span class="message__meta">{{createdAt}}</span>  
                 </p>
@@ -72,7 +72,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/chat.js"></script>
+  <script src="../../public/js/chat.js"></script>
 </body>
 
 </html>
