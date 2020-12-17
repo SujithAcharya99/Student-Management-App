@@ -11,18 +11,49 @@
   <div class="centered-form">
     <div class="centered-form__box">
       <h1>Join</h1>
-     <!-- <form action="/chat.html"> --> 
-       <form action="/chat.html" >
+      <!-- <form action="/chat.html"> -->
+      <form action="/chat.html">
         <label> display name</label>
-        <input type="text" name="username" placeholder="Display Name" required>
+        <input type="text" name="username" placeholder="Display Name" value="{{student.name}}" required>
+        {{!-- <select name="forma" onchange="location = this.value;">
+ <option value="Home.php">Home</option>
+ <option value="Contact.php">Contact</option>
+ <option value="Sitemap.php">Sitemap</option>
+</select> --}}
+
+        <table class="table table-striped">
+          {{!-- <p> {{admin}}</p> --}}
+          <thead>
+            <tr>
+              <th> Name</th>
+              <th>Roll</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each users_data}}
+            <tr>
+              <td><a href="#">{{this.name}}</a></td>
+              <td>{{this.roll}}</td>
+              {{!-- <td>
+                <a href="/user/delete/{{this._id}} " class="btn btn-secondary" class="fa fa-delete"
+                  style="color: red;">Delete</a>
+                <a href="/user/edit/{{this._id}} " class="btn btn-secondary" class="fa fa-edit"
+                  style="color: blue;">Edit</a>
+              </td> --}}
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
         <label>Room </label>
         <input type="text" name="room" placeholder="Room" required>
         <button>JOIN</button>
       </form>
     </div>
   </div>
+  
   <!-- <script src="/socket.io/socket.io.js"></script>
   <script src="/js/chat.js"></script> -->
+
 </body>
 
 </html>
