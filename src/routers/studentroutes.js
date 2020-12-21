@@ -26,24 +26,40 @@ router.get('/', async (req, res) => {
 
 })
 
-router.get('/chat/:id', async (req, res) => {
-  // console.log(req.params.id);
-  const student = await Student.findById(req.params.id);
-  console.log(student.name)
-  const users_data = await User.find({});
-  res.render('index_chat', {
-    users_data,
-    student
-  })
+router.post('/chat', async (req, res) =>{
+  console.log(req.body);
+  res.status(200).send();
 })
 
-router.post('/chat/:id', async (req, res) => {
-  console.log(req.body)
-  res.render('chat', {
-    username: req.body.username,
-    room: req.body.room
-  })
-})
+router.get('/chat/:id&:roll', async (req, res) => {
+  if (req.params.roll === 'student') {
+    const userdata = await Student.findById(req.params.id);
+    const users = await User.find({});
+    let users_data = []
+    for (const i in users) {
+      if (users[i].name !== userdata.name) {
+        users_data.push(users[i]);
+      }
+    }
+      res.render('index_chat', {
+      users_data,
+      userdata
+    })
+  } else if (req.params.roll === 'teacher') {
+    const userdata = await Teacher.findById(req.params.id);
+    const users = await User.find({});
+    let users_data = []
+    for (const i in users) {
+      if (users[i].name !== userdata.name) {
+        users_data.push(users[i]);
+
+      }
+    }
+    res.render('index_chat', {
+      users_data,
+      userdata
+    })
+  }
 
 router.get('/test', async (req, res) => {
 
