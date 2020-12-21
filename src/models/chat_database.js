@@ -1,22 +1,23 @@
 const mongoose = require('mongoose');
-const validator = require('validator')
+const validator = require('validator');
+const { db } = require('./admin');
 
 // // const Test = mongoose.model('Test', {
 const chatSchema = new mongoose.Schema({
-  id:{
+  id: {
     type: String,
     required: true
   },
   username: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    room: {
-        type: String,
-        required: true,
-        trim: true
-    }
+    type: String,
+    required: true,
+    trim: true
+  },
+  room: {
+    type: String,
+    required: true,
+    trim: true
+  }
 });
 
 
@@ -32,6 +33,7 @@ const users = [];
 
 const addUser = ({ id, username, room }) => {
   //clear the data 
+
   username = username.trim().toLowerCase(),
     room = room.trim().toLowerCase()
 
@@ -58,19 +60,20 @@ const addUser = ({ id, username, room }) => {
   const user = { id, username, room }
   // console.log(user)
   users.push(user)
+  // console.log(users)
   const user_data = new Chat(user);
-  user_data.save().then((data)=>{
+  user_data.save().then((data) => {
     // console.log(user_data)
   }).catch((e) => {
     console.log(e)
   });
-  // console.log(Chat.find({}))
+  // console.log(user)
   return { user }
 
 }
 
 const removeUser = async (id) => {
-  const data = await Chat.findOneAndRemove({id});
+  const data = await Chat.findOneAndRemove({ id });
   // console.log(data);
   // await data.remove();
   const index = users.findIndex((user) => user.id === id)
@@ -83,15 +86,44 @@ const removeUser = async (id) => {
 }
 
 const getUser = (id) => {
+  // console.log(users.find((user) => user.id === id))
   return users.find((user) => user.id === id)
 
 }
 
 const getusersInRoom = async (room) => {
-  // return users.filter((user) => user.room === room)
+  // console.log(room)
   const users = await Chat.find({});
-  console.log(users)
+  //   // console.log(users)
+  // for (const i in users) {
+   
+  //   console.log(users[i].username)
+      
+  
+  // }
+  // async () => {
+  //   console.log('inside empty function')
+  //   const users = await Chat.find({});
+  //   console.log(users)
+  //   // return users
+  //   }
+    // console.log(users)
+
+  return users
+  // var jsonString = JSON.stringify(users);
+  // console.log(jsonString)
+  // return jsonString
+  // return users.filter((user) => user.room === room)
 }
+
+
+// const getusersInRoom = async (room) => {
+//   // console.log(users.filter((user) => user.room === room))
+//   return users.filter((user) => user.room === room)
+// const users = await Chat.find({room});
+// console.log(users)
+// return users
+// }
 
 // addUser({
 //     id: 22,
