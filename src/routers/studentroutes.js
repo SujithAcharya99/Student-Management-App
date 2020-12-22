@@ -31,6 +31,14 @@ router.post('/chat', async (req, res) =>{
   res.status(200).send();
 })
 
+router.get('/chat_list/:id&:email', async (req, res) =>{
+  console.log(req.params);
+  const userdata = await User.findById(req.params.id);
+  const name = userdata.name;
+  const roll = userdata.roll;
+  res.redirect(`/chat.html?username=${name}&room=${roll}`)
+})
+
 router.get('/chat/:id&:roll', async (req, res) => {
   if (req.params.roll === 'student') {
     const userdata = await Student.findById(req.params.id);
