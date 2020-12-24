@@ -1,5 +1,8 @@
 // console.log('inside chat.js');
+
 const socket = io();
+const {username ,room }= require('../../src/routers/studentroutes');
+// console.log('hii')
 // io();
 
 //Elements
@@ -15,9 +18,14 @@ const locatioMessageTemplate = document.querySelector('#location-message-templat
 const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML;
 
 //options
-const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+// const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
+// const username = "sujith";
+// const room = "student";
 
 
+
+// console.log('username is', username)
+// console.log('romm is', room)
 //autoscroll
 const autoscroll = () => {
   //new message element
@@ -44,7 +52,7 @@ const autoscroll = () => {
 }
 
 socket.on('message', (msg) => {
-  console.log(msg);
+  // console.log(msg);
   const html = Mustache.render(messageTemplate, {
     username: msg.username,
     msg: msg.text,
