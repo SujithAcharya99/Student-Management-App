@@ -31,15 +31,23 @@ router.post('/chat', async (req, res) =>{
   res.status(200).send();
 })
 
-router.get('/chat_list/:id&:email', async (req, res) =>{
-  console.log(req.params);
-  const userdata = await User.findById(req.params.id);
-  const name = userdata.name;
-  const roll = userdata.roll;
-  res.redirect(`/chat.html?username=${name}&room=${roll}`)
-})
+router.get('/chat_list/:user2&:user1&:roll', async (req, res) => {
+  const roll = req.params.roll;
+  const reqData = req.params;
+  const userdata = await User.findById(req.params.user2);
+  const username = userdata.name;
+  const room = userdata.roll;
+  const userIdData = [];
+  for (const i in reqData) {
+    userIdData.push(reqData[i])
+  }
+  const roomData = new Room({ mainUser: req.params.user1, userIds: userIdData });
+  roomData.save();
+  res.redirect(`/chat.html?username=${req.params.user1}&room=${roll}`)
+});
 
 router.get('/chat/:id&:roll', async (req, res) => {
+  const roll = req.params.roll;
   if (req.params.roll === 'student') {
     const userdata = await Student.findById(req.params.id);
     const users = await User.find({});
@@ -49,9 +57,14 @@ router.get('/chat/:id&:roll', async (req, res) => {
         users_data.push(users[i]);
       }
     }
-      res.render('index_chat', {
+    const useremail = userdata.email;
+    const userid = userdata.id;
+    res.render('index_chat', {
       users_data,
-      userdata
+      userdata,
+      useremail,
+      userid,
+      roll
     })
   } else if (req.params.roll === 'teacher') {
     const userdata = await Teacher.findById(req.params.id);
@@ -60,14 +73,20 @@ router.get('/chat/:id&:roll', async (req, res) => {
     for (const i in users) {
       if (users[i].name !== userdata.name) {
         users_data.push(users[i]);
-
       }
     }
+    const useremail = userdata.email;
+    const userid = userdata.id;
     res.render('index_chat', {
       users_data,
-      userdata
+      userdata,
+      useremail,
+      userid,
+      roll
     })
   }
+  })
+    
 
 router.get('/test', async (req, res) => {
 
