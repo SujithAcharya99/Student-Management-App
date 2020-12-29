@@ -6,6 +6,8 @@ const socketio = require('socket.io');
 const hbs = require('hbs');
 const bodyparser = require('body-parser');
 const router = require('./routers/studentroutes');
+// const Server_chat = require('./server');
+// const { name, roll} = require('./routers/studentroutes');
 
 const app = express();
 const server = http.createServer(app);
@@ -15,7 +17,9 @@ const port = process.env.PORT || 3000;
 const publicDirectoryPath = path.join(__dirname, '../public');
 const viewsPath = path.join(__dirname, '../views/views');
 const partialsPath = path.join(__dirname, '../views/partials')
+// require('./server');
 
+// const viewsPath = path.join(__dirname,'../views');
 app.set('view engine', 'hbs');
 app.set('views', viewsPath);
 
@@ -29,20 +33,29 @@ app.use(bodyparser.urlencoded({
 }));
 
 //*******************chat System******************************* */
+// const {ans} = require('./routers/studentroutes');
+
+// console.log(studentRouter.value);
 
 const Filter = require('bad-words');
+// const { generateMessage, generateLocationMessage } = require('./utils/messages');
+// const {Chat} = require('./models/chat_database');
 const { addUser, removeUser, getUser, getusersInRoom, generateMessage, generateLocationMessage } = require('./models/chat_database');
-const Room = require('./models/room');
-const Student = require('./models/student');
-const Teacher = require('./models/teacher');
+// const Room = require('./models/room');
+// const Student = require('./models/student');
+// const Teacher = require('./models/teacher');
 
 io.on('connection', (socket) => {
   console.log('New webSocket Connection');
-  socket.on('join', (options, callback) => {
+  socket.on('join', async (options, callback) => {
     console.log('options:', options);
+    // console.log('username',exports);
+    // console.log('value from router ',getUserId());
     if (options.room === 'student') {
-      const mainId = Student.find({ name: options.username });
-      const room = Room.find({ mainUser: mainId });
+      // const mainId = await Student.findById({ _id: options.username });
+      // console.log('student database::', mainId.name);
+      // const room = await Room.findOne({ mainUser: options.username });
+      // console.log('from Room Databse::', room)
       const { error, user } = addUser({ id: socket.id, ...options })
       console.log(user);
       if (error) {
@@ -50,40 +63,106 @@ io.on('connection', (socket) => {
       }
 
       socket.join(user.room);
-    socket.emit('message', generateMessage('Admin', 'welcome!'));
-    socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`));
+      socket.emit('message', generateMessage('Admin', 'welcome!'));
+      socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`));
 
-    getusersInRoom(user.room).then((user_value) => {
-      io.emit('roomData', {
-        room: user.room,
-        users: user_value
-      });
-    }).catch((e) => {
-      console.log(e)
-    })
-    callback();
+      getusersInRoom(user.room).then((user_value) => {
+        // console.log('data from getuserinroom ::', user_value)
+        io.emit('roomData', {
+          room: user.room,
+          users: user_value
+        });
+      }).catch((e) => {
+        console.log(e)
+      })
+      callback();
+
+
     } else if (options.room === 'teacher') {
-      const mainId = Teacher.find({ name: options.username });
-      const room = Room.find({ mainUser: mainId });
+      // const mainId = await Teacher.findById({ _id: options.username });
+      // console.log('teacher database::', mainId.name);
+      // const room = await Room.findOne({ mainUser: mainId._id });
+      // console.log('from Room Databse::', room)
       const { error, user } = addUser({ id: socket.id, ...options })
-      console.log(user)
+      console.log('teacher user',user)
       if (error) {
         return callback(error)
       }
+
       socket.join(user.room);
-    socket.emit('message', generateMessage('Admin', 'welcome!'));
-    socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`));
-    getusersInRoom(user.room).then((user_value) => {
-      io.emit('roomData', {
-        room: user.room,
-        users: user_value
-      });
-    }).catch((e) => {
-      console.log(e)
-    })
-    callback();
+      socket.emit('message', generateMessage('Admin', 'welcome!'));
+      socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`));
+      getusersInRoom(user.room).then((user_value) => {
+        console.log('users in room', user_value)
+        io.emit('roomData', {
+          room: user.room,
+          users: user_value
+        });
+      }).catch((e) => {
+        console.log(e)
+      })
+      callback();
 
     }
+    // const { error, user } = addUser({ id: socket.id, ...options })
+    // console.log(user)
+    // if (error) {
+    //   return callback(error)
+    // }
+    // socket.join(user.room);
+    // socket.emit('message', generateMessage('Admin', 'welcome!'));
+    // socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`));
+    // io.to(user.room).emit('roomData', {
+
+    //  let data = Promise.resolve(getusersInRoom(user.room));
+    //   getusersInRoom(user.room).then((user_value) =>{
+    //    console.log(user_value);
+
+    //   data = user_value;
+    //   return user_value
+    // }).catch((e)=> {
+    //   console.log(e)
+    // })
+    // console.log(data)
+    // let data = getusersInRoom(user.room);
+    // // let a;
+    // const printAddress = async () => {
+    //    const a = await data;
+    //   // console.log(a);
+    //   return a;
+    // };
+    // // console.log(a);
+    // let d = printAddress();
+    // console.log(d)
+
+    // getusersInRoom(user.room).then((user_value) => {
+    //   console.log(user_value);
+
+    //  data = user_value;
+    //  return user_value
+
+    // io.emit('roomData', {
+    //     room: user.room,
+    //     users: user_value
+    //   });
+    // }).catch((e) => {
+    //   console.log(e)
+    // })
+
+    // io.emit('roomData', {
+    //   room: user.room,
+    //   // users: a
+    // });
+    // console.log(user.room)
+    // console.log(getusersInRoom(user.room))
+    // callback();
+
+    // io.to(user.room).emit('roomData', {
+    //   room: user.room,
+    //   users: getusersInRoom(user.room)
+    // });
+    // callback();
+
   })
 
   socket.on('SendMessage', (msg, callback) => {
@@ -95,7 +174,7 @@ io.on('connection', (socket) => {
     }
     io.to(user.room).emit('message', generateMessage(user.username, msg));
     callback();
-  })
+  });
 
   socket.on('sendLocation', (sendloc, callback) => {
     const user = getUser(socket.id);
