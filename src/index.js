@@ -34,12 +34,10 @@ io.on('connection', (socket) => {
   socket.on('join', async (options, callback) => {
     console.log('options:', options);
     if (options.room === 'student') {
-       //const mainId = await Student.findById({ _id: options.username });
-       //console.log('student database::', mainId.name);
-       const room = await Room.findOne({ mainUser: options.username });
-      console.log('from Room Databse::', room)
-      const { error, user } = addUser({ id: socket.id, ...options })
-      console.log(user);
+      const room = await Room.findOne({ mainUser: options.username });
+      // console.log('from Room Databse::', room)
+      const { error, user } = await addUser({ id: socket.id, ...options })
+      // console.log('student::', user);
       if (error) {
         return callback(error)
       }
@@ -49,6 +47,7 @@ io.on('connection', (socket) => {
       socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`));
 
       getusersInRoom(user.room).then((user_value) => {
+        // console.log('data from getuserinroom ::', user_value)
         io.emit('roomData', {
           room: user.room,
           users: user_value
@@ -60,20 +59,19 @@ io.on('connection', (socket) => {
 
 
     } else if (options.room === 'teacher') {
-      // const mainId = await Teacher.findById({ _id: options.username });
-      // console.log('teacher database::', mainId.name);
-       const room = await Room.findOne({ mainUser: options.username });
-       console.log('from Room Databse::', room)
-      const { error, user } = addUser({ id: socket.id, ...options })
-      console.log('teacher user',user)
+      const room = await Room.findOne({ mainUser: options.username });
+      // console.log('from Room Databse::', room)
+      const { error, user } = await addUser({ id: socket.id, ...options })
+      // console.log('teacher user', user)
       if (error) {
         return callback(error)
       }
+
       socket.join(user.room);
       socket.emit('message', generateMessage('Admin', 'welcome!'));
       socket.broadcast.to(user.room).emit('message', generateMessage('Admin', `${user.username} has joined!`));
       getusersInRoom(user.room).then((user_value) => {
-        console.log('users in room', user_value)
+        // console.log('users in room', user_value)
         io.emit('roomData', {
           room: user.room,
           users: user_value
