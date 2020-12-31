@@ -12,7 +12,7 @@ const roomSchema = new mongoose.Schema({
         type: String,
         required: true,
     }],
-    massage: [{
+    message: [{
         username: {
             type: String,
             required: true,
