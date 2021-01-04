@@ -43,7 +43,15 @@ router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
     user1Data = await User.findOne({ email: mainUserData.email });
   }
   const userdata = await User.findById(req.params.user2);
-  const username = userdata.name;
+  let userNames = [];
+  const username1 = user1Data.name;
+  userNames.push(username1);
+  const username2 = userdata.name;
+  userNames.push(username2);
+
+  console.log('username1::', username1);
+  console.log('username2::', username2);
+  console.log(userNames)
   const room = userdata.roll;
   const userIdData = [];
   for (const i in reqData) {
@@ -54,36 +62,34 @@ router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
     }
   }
   const userId = userIdData[0];
-  const exist = await Room.findOne({ mainUser: userId });
-  let count = 0;
-  if (exist) {
-    console.log('found');
-    const existData = exist.userIds;
-    for (let i = 0; i < existData.length - 1; i++) {
-      if (existData[i] === userIdData[i]) {
-        count += 1;
+  console.log('userid ::', userId);
+  const roomExist = await Room.find({});
+  let roomIds;
+  let existIndex = 0
+  let indexCount = 0;
+  roomExist.forEach(element => {
+    roomIds = element.userIds;
+    for (let i = 0; i < roomIds.length - 1; i++) {
+      if (userIdData[0] === roomIds[i] || userIdData[1] === roomIds[i]) {
+        console.log('inside if ::', roomIds[i]);
+        console.log('both exist in index::', indexCount)
+        existIndex = 1;
       }
     }
-    console.log(count);
-    switch (count) {
-      case 1: const roomData = new Room({
-        mainUser: userId,
-        mainUserName: username,
-        userIds: userIdData
-      });
-        await roomData.save();
-        console.log(roomData);
-        res.redirect(`/chat.html?username=${userId}&room=${roll}`);
-        break;
-      case 2:
-        res.redirect(`/chat.html?username=${userId}&room=${roll}`);
-        break;
-    }
+    indexCount++;
+  });
+
+  console.log(existIndex)
+  console.log(roomExist[existIndex].userNames)
+  const exist = roomExist[existIndex];
+  if (exist) {
+    res.redirect(`/chat.html?username=${userId}&room=${exist._id}`);
   } else {
-    const roomData = new Room({ mainUser: userId, mainUserName: username, userIds: userIdData });
+    const roomData = new Room({ mainUser: userId, userNames: userNames, userIds: userIdData });
     roomData.save();
     res.redirect(`/chat.html?username=${userId}&room=${roll}`);
   }
+
 });
 
 
