@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const Room = require('./room');
 const User = require('./users')
-// const { db } = require('./admin');
 
-// // const Test = mongoose.model('Test', {
 const chatSchema = new mongoose.Schema({
   id: {
     type: String,
