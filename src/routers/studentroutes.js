@@ -64,11 +64,15 @@ router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
         count += 1;
       }
     }
-    console.log(count)
-
+    console.log(count);
     switch (count) {
-      case 1: const roomData = new Room({ mainUser: userId, mainUserName: user1Data.name ,userIds: userIdData });
-        roomData.save();
+      case 1: const roomData = new Room({
+        mainUser: userId,
+        mainUserName: username,
+        userIds: userIdData
+      });
+        await roomData.save();
+        console.log(roomData);
         res.redirect(`/chat.html?username=${userId}&room=${roll}`);
         break;
       case 2:
@@ -76,7 +80,7 @@ router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
         break;
     }
   } else {
-    const roomData = new Room({ mainUser: userId, userIds: userIdData });
+    const roomData = new Room({ mainUser: userId, mainUserName: username, userIds: userIdData });
     roomData.save();
     res.redirect(`/chat.html?username=${userId}&room=${roll}`);
   }
