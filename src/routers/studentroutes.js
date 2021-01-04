@@ -32,28 +32,21 @@ router.post('/chat', async (req, res) =>{
 })
 
 router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
-  // console.log(req.params);
   const roll = req.params.roll;
   const reqData = req.params;
   var user1Data;
   if (roll === 'student') {
     const mainUserData = await Student.findById(req.params.user1);
     user1Data = await User.findOne({ email: mainUserData.email });
-    // console.log('user1data::',user1Data)
   } else if (roll === 'teacher') {
     const mainUserData = await Teacher.findById(req.params.user1);
     user1Data = await User.findOne({ email: mainUserData.email });
-    // console.log('user1data::', mainUserData.name)
   }
   const userdata = await User.findById(req.params.user2);
-  // console.log(userdata.name)
   const username = userdata.name;
   const room = userdata.roll;
-  // console.log(value)
-  // value = 'hello from router';
   const userIdData = [];
   for (const i in reqData) {
-    // console.log(i)
     if (i === 'user1') {
       userIdData.push(user1Data._id.toString())
     } else {
@@ -61,27 +54,20 @@ router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
     }
   }
   const userId = userIdData[0];
-
-  // /console.log('userid ::', userId)
   const exist = await Room.findOne({ mainUser: userId });
-  // console.log('Room data exist ::', exist)
   let count = 0;
-
   if (exist) {
     console.log('found');
     const existData = exist.userIds;
-    // console.log( existData.length);
     for (let i = 0; i < existData.length - 1; i++) {
       if (existData[i] === userIdData[i]) {
-        // console.log(existData[i]);
         count += 1;
       }
-      // console.log(existData[i]);
     }
     console.log(count)
 
     switch (count) {
-      case 1: const roomData = new Room({ mainUser: userId, userIds: userIdData });
+      case 1: const roomData = new Room({ mainUser: userId, mainUserName: user1Data.name ,userIds: userIdData });
         roomData.save();
         res.redirect(`/chat.html?username=${userId}&room=${roll}`);
         break;
@@ -89,15 +75,13 @@ router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
         res.redirect(`/chat.html?username=${userId}&room=${roll}`);
         break;
     }
-
   } else {
-    // console.log('not found');
     const roomData = new Room({ mainUser: userId, userIds: userIdData });
     roomData.save();
     res.redirect(`/chat.html?username=${userId}&room=${roll}`);
   }
-
 });
+
 
 router.get('/chat/:id&:roll', async (req, res) => {
   const roll = req.params.roll;
