@@ -6,13 +6,10 @@ const Course = require('../models/course');
 const User = require('../models/users');
 const Test = require('../models/test');
 const auth = require('../middleware/auth');
-// const pro = require('../test');
 const browserify = require('browserify')
 const path = require('path');
-// const hbs = require('hbs');
 const bodyparser = require('body-parser');
 const { stringify } = require('querystring');
-// const title } = require('process');
 const router = new express.Router();
 router.use(bodyparser.urlencoded({
   extended: true
@@ -21,7 +18,6 @@ router.use(bodyparser.urlencoded({
 router.get('/', async (req, res) => {
   res.render('index', {
     title: 'Login Page',
-    // name : 'Sujith S'
   });
 
 })
@@ -32,6 +28,7 @@ router.post('/chat', async (req, res) =>{
 })
 
 router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
+  
   const roll = req.params.roll;
   const reqData = req.params;
   var user1Data;
@@ -42,6 +39,7 @@ router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
     const mainUserData = await Teacher.findById(req.params.user1);
     user1Data = await User.findOne({ email: mainUserData.email });
   }
+
   const userdata = await User.findById(req.params.user2);
   let userNames = [];
   const username1 = user1Data.name;
@@ -49,9 +47,6 @@ router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
   const username2 = userdata.name;
   userNames.push(username2);
 
-  console.log('username1::', username1);
-  console.log('username2::', username2);
-  console.log(userNames)
   const room = userdata.roll;
   const userIdData = [];
   for (const i in reqData) {
@@ -61,33 +56,36 @@ router.get('/chat_list/:user1&:user2&:roll', async (req, res) => {
       userIdData.push(reqData[i])
     }
   }
+
   const userId = userIdData[0];
-  console.log('userid ::', userId);
   const roomExist = await Room.find({});
   let roomIds;
-  let existIndex = 0
+  let existIndex = -1
   let indexCount = 0;
   roomExist.forEach(element => {
     roomIds = element.userIds;
     for (let i = 0; i < roomIds.length - 1; i++) {
-      if (userIdData[0] === roomIds[i] || userIdData[1] === roomIds[i]) {
-        console.log('inside if ::', roomIds[i]);
-        console.log('both exist in index::', indexCount)
-        existIndex = 1;
+      if (userIdData[0] === roomIds[i]) {
+        if (userIdData[1] === roomIds[i + 1]) {
+          existIndex = indexCount;
+        }
+      } else  if (userIdData[1] === roomIds[i]) {
+        if (userIdData[0] === roomIds[i + 1]) {
+          existIndex = indexCount;
+        }
       }
     }
     indexCount++;
   });
-
-  console.log(existIndex)
-  console.log(roomExist[existIndex].userNames)
-  const exist = roomExist[existIndex];
-  if (exist) {
-    res.redirect(`/chat.html?username=${userId}&room=${exist._id}`);
-  } else {
+  if (existIndex === -1) {
     const roomData = new Room({ mainUser: userId, userNames: userNames, userIds: userIdData });
-    roomData.save();
-    res.redirect(`/chat.html?username=${userId}&room=${roll}`);
+      roomData.save();
+      res.redirect(`/chat.html?username=${userId}&room=${roomData._id}`);
+  } else {
+    const exist = roomExist[existIndex];
+    if (exist) {
+            res.redirect(`/chat.html?username=${userId}&room=${exist._id}`);
+          }
   }
 
 });
