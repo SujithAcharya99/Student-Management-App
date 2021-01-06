@@ -18,13 +18,6 @@ const chatSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  users: [{
-    usernames: {
-      type: String,
-      required: true,
-      trim: true
-    }
-  }],
   room: {
     type: String,
     required: true,
