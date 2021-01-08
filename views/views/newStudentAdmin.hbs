@@ -25,7 +25,17 @@
       <label>Age </label>
       <input id="age" type="text" name="age" placeholder="age" value={{student.age}} required>
       <label>Subject </label>
-      <input id="subject" type="text" name="subject" placeholder="subject" required>
+      {{!-- <input id="subject" type="text" name="subject" placeholder="subject" required> --}}
+      <select name="subject" id="subject">
+        <option value="Not assigned">Not assigned</option>
+        <option value="Java">Java</option>
+        <option value="C Program">C Program</option>
+        <option value="Python">Python</option>
+        <option value="Node js">Node js</option>
+        <option value="Machine Learining">Machine Learining</option>
+        <option value="Javascript">Javascript</option>
+
+      </select>
 
       <button type="submit">SUBMIT</button>
     </form>
