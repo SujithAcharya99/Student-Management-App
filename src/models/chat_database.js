@@ -96,10 +96,9 @@ const generateHistoryMessage = async (id, chatSize) => {
   }
 
 }
-let msg = [];
-
 
 const generateMessage = async (id, username, text) => {
+  const msg = [];
   msg.push({
     id,
     username,
@@ -129,7 +128,7 @@ const generateMessage = async (id, username, text) => {
 }
 
 const generateLocationMessage = async (id, username, text) => {
-
+  const msg = [];
   msg.push({
     id,
     username,
