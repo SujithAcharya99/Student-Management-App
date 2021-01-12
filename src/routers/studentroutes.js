@@ -25,6 +25,36 @@ router.get('/', async (req, res) => {
 
 })
 
+router.get('/createGroup/:useremail', auth, async (req, res) => {
+  const userData = await User.find({});
+  res.render('groupChat', {
+    userData
+  })
+});
+
+router.get('/createNewGroup', auth, async (req, res) => {
+  const username = req.user.name;
+  const userData = await User.find({});
+  let users_data = []
+  for (const i in userData) {
+    if (userData[i].name !== username) {
+      users_data.push(userData[i]);
+    }
+  }
+  res.render('newGroup', {
+    users_data
+  })
+});
+
+router.post('/newGroupData', auth, async (req, res) => {
+  const userData = await User.find({});
+  console.log(req.body);
+  res.render('groupChat', {
+    userData
+  })
+});
+
+
 router.get('/chat_list/:user1&:user2&:roll', auth, async (req, res) => {
   const roll = req.params.roll;
   const reqData = req.params;
