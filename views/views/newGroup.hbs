@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
   <title>Student-Management App</title>
   <link rel="icon" href="/photo/logo.png">
   <link rel="stylesheet" href="/css/styles.css">
-
-
 </head>
-
 <body>
   <div class="main-content">
     {{>header}}
@@ -18,26 +13,6 @@
       <table>
         <label>Group Name</label>
         <input id="groupName" type="text" name="groupName" placeholder="groupName" required>
-        {{!-- <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-        <label for="vehicle1"> I have a bike</label><br>
-        <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
-        <label for="vehicle2"> I have a car</label><br>
-        <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-        <label for="vehicle3"> I have a boat</label><br><br> --}}
-        {{!-- <label>Email </label>
-        add mrmber ftok
-        <input id="email" type="text" name="email" placeholder="email" required>
-        <label>Password </label>
-        <input id="password" type="text" name="password" placeholder="password" required>
-        <label>age </label>
-        <input id="age" type="text" name="age" placeholder="age" required>
-        <label>roll </label>
-        <input id="roll" type="text" name="roll" placeholder="roll" required>
-
-        <label>Subject Taught </label>
-        <input id="Subject" type="text" name="subjects_taught" placeholder="Subject" required> --}}
-
-
         <thead>
           <tr>
             <th>Add Member</th>
@@ -46,9 +21,6 @@
         <tbody>
           {{#users_data}}
           <tr>
-            {{!-- <td><a style="text-decoration:none"
-                href="/chat_list/{{../userid}}&{{this.id}}&{{../roll}}">{{this.name}}</a></td> --}}
-            {{!-- <td>{{this.name}}</td> --}}
             <td>
               <input type="checkbox" id="name" name="name" value={{this.name}}>
               <label for="name"> {{this.name}} </label><br>
@@ -56,30 +28,9 @@
           </tr>
           {{/users_data}}
         </tbody>
-
-
-
-
       </table>
       <button type="submit">SUBMIT</button>
     </form>
-
-
-    {{!-- <tr>
-              <th>Email</th>
-              <th>Password</th>
-            </tr>
-            <tr>
-              <td>
-                <input id="email" type="text" name="email" placeholder="email" required>
-              </td>
-              <td>
-                <input id="password" type="text" name="password" placeholder="password" required>
-              </td>
-              <td>
-                <button type="submit">SUBMIT</button>
-              </td> --}}
-
     {{>footer}}
   </div>
 </body>
