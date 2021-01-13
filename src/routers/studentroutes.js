@@ -26,13 +26,16 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/createGroup/:useremail', auth, async (req, res) => {
-  const userData = await User.find({});
+
+  const roomData = await Room.find({ type: 2 });
   res.render('groupChat', {
-    userData
+    roomData
   })
 });
 
+
 router.get('/createNewGroup', auth, async (req, res) => {
+
   const username = req.user.name;
   const userData = await User.find({});
   let users_data = []
@@ -47,13 +50,68 @@ router.get('/createNewGroup', auth, async (req, res) => {
 });
 
 router.post('/newGroupData', auth, async (req, res) => {
-  const userData = await User.find({});
-  console.log(req.body);
-  res.render('groupChat', {
-    userData
-  })
+
+  const username = req.user.name;
+  const id = req.user._id;
+  const groupName = req.body.groupName;
+  const email = req.user.email;
+  const roll = req.user.roll;
+  const users = await User.find({});
+  let users_data = []
+  let userNames = [];
+  let userIDs = [];
+  for (const i in users) {
+    if (users[i].name !== username) {
+      users_data.push(users[i]);
+    }
+  }
+  const emailData = req.body.name;
+  console.log(emailData)
+  for (let i = 0; i < emailData.length; i++) {
+    const userInfo = await User.findOne({ email: emailData[i] });
+    userIDs.push(userInfo._id);
+    userNames.push(userInfo.name);
+  }
+  userIDs.push(id);
+  userNames.push(username);
+  if (roll == 'student') {
+    const userData = await Student.findOne({ email });
+    const roomGroup = new Room({ mainUser: groupName, type: 2, userNames: userNames, userIds: userIDs });
+    roomGroup.save();
+    res.redirect(`/chat/${userData._id}&${userData.roll}`)
+  } else if (roll == 'teacher') {
+    const userData = await Teacher.find({ email })
+    const roomGroup = new Room({ mainUser: groupName, type: 2, userNames: userNames, userIds: userIDs });
+    // console.log(roomGroup);
+    roomGroup.save();
+    res.redirect(`/chat/${userData._id}&${userData.roll}`)
+  }
 });
 
+router.get('/group/delete/:id', auth, async (req, res) => {
+
+  const email = req.user.email;
+  const roll = req.user.roll;
+  if (roll === 'student') {
+    const userData = await Student.findOne({ email });
+    console.log(req.params.id);
+    const roomData = await Room.findOneAndDelete({ type: 2 });
+    res.redirect(`/chat/${userData._id}&${userData.roll}`)
+  } else if (roll === 'teacher') {
+    const userData = await Teacher.findOne({ email });
+    const roomData = await Room.findOneAndDelete({ type: 2 });
+    res.redirect(`/chat/${userData._id}&${userData.roll}`)
+  }
+});
+
+router.get('/group/addmember/:id', auth, async (req, res) => {
+
+  const id = req.params.id;
+  const roomData = await Room.findById({ _id: id });
+  res.render('addMember',{
+    roomData
+  })
+});
 
 router.get('/chat_list/:user1&:user2&:roll', auth, async (req, res) => {
   const roll = req.params.roll;
