@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Student-Manager App</title>
+  <link rel="icon" href="/photo/logo.png">
+  <link rel="stylesheet" href="/css/styles.min.css">
+  <style>
+    a:link,
+    a:visited {
+      background-color: rgb(170, 191, 194);
+      color: white;
+      padding: 14px 25px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      width: 50%;
+    }
+
+    a:hover,
+    a:active {
+      background-color: gray;
+    }
+  </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+</head>
+
+<body>
+  <div class="centered-form">
+    <div class="centered-form__box">
+      <h1>Join</h1>
+
+      {{!-- <label> display name</label>
+        {{!-- <input type="text" name="username" placeholder="Display Name" value="{{userdata.name}}" required> --}}
+      <!-- <form action="/chat.html"> -->
+
+      {{!-- <form action="/chat" method="POST"> --}}
+      {{!-- <label> display name</label>
+        {{!-- <input type="text" name="username" placeholder="Display Name" value="{{userdata.name}}" required> --}}
+      {{!-- <select name="forma" onchange="location = this.value;">
+ <option value="Home.php">Home</option>
+ <option value="Contact.php">Contact</option>
+ <option value="Sitemap.php">Sitemap</option>
+</select> --}}
+
+
+      <form action="/chat.html">
+
+        {{!-- <label for="fname">Firstname:</label>
+        <label for="cars">Display Name</label>
+        <select id="user" name="username">
+          <option value="adhi">adhi</option>
+          <option value="arjun">arjun</option>
+          <option value="sharath">sharath</option>
+          <option value="mohan">mohan</option>
+        </select>
+        
+
+        <label for="cars">Room</label>
+        <select id="cars" name="room">
+          <option value="student">student</option>
+          <option value="teacher">teacher</option>
+          <option value="student">student</option>
+          <option value="teacher">teacher</option>
+        </select> --}}
+        {{!-- <button>JOIN</button> --}}
+        {{!-- <input type="submit"> --}}
+        {{!-- </form> --}}
+
+        <h4>{{userdata.name}}</h4>
+        <h4>{{userdata.email}}</h4>
+        <h4>{{userdata.roll}}</h4>
+        {{!-- <h4><a style="text-decoration:none" href="/createGroup/{{userdata.email}}">Create Group</a></h4>
+        <h4><a style="text-decoration:none" href="#">Group Chat</a></h4> --}}
+
+        <h4 id="demo"></h4>
+        <table class="table table-hover">
+          {{!-- <p> {{admin}}</p> --}}
+          <thead>
+            <tr>
+              <th>Group Name</th>
+              {{!-- <th>Room</th> --}}
+            </tr>
+          </thead>
+          <tbody>
+            {{!-- <label> display name</label>
+              <td><input type="text" name="username" placeholder="Display Name" required></td> --}}
+            {{#index}}
+            <tr>
+              {{!-- <label> display name</label> --}}
+              {{!-- <td><input type="text" name="username" placeholder="Display Name" value="{{this.name}}" required></td> --}}
+
+              {{!-- <td><a style="text-decoration:none"
+                  href="/chat_list/{{../userid}}&{{this.id}}&{{../roll}}">{{this.name}}</a></td> --}}
+              <td><a style="text-decoration:none" href="/groupChat/{{this.id}}">{{this.mainUser}}</a></td>
+              {{!-- <td>{{../userid}} </td> --}}
+
+              {{!-- <td><input type="text" name="room" placeholder="Room" value="{{this.roll}}" required></td> --}}
+              {{!-- <td>{{this.roll}}</td> --}}
+              {{!-- <td><button>JOIN</button></td> --}}
+
+              {{!-- <td>
+                <a href="/user/delete/{{this._id}} " class="btn btn-secondary" class="fa fa-delete"
+                  style="color: rgb(170, 191, 194);">Delete</a>
+                <a href="/user/edit/{{this._id}} " class="btn btn-secondary" class="fa fa-edit"
+                  style="color: blue;">Edit</a>
+              </td> --}}
+            </tr>
+            {{/index}}
+          </tbody>
+        </table>
+
+        {{!-- <label>Room </label>
+        <input type="text" name="room" placeholder="Room" required>
+        <button>JOIN</button> --}}
+      </form>
+      {{!-- <a style="text-decoration:none" href="/student/dashboard">Dashboard</a> --}}
+    </div>
+  </div>
+
+  <!-- <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/chat.js"></script> -->
+
+</body>
+
+</html>
