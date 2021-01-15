@@ -106,119 +106,78 @@ router.get('/group/delete/:id', auth, async (req, res) => {
   }
 });
 
+
 router.get('/group/addmember/:id', auth, async (req, res) => {
-
-  // const email = req.user.email;
-  // const roll = req.user.roll;
-  // if (roll === 'student') {
-  //   const userData = await Student.findOne({ email });
-  //   console.log(req.params.id);
-  //   const roomData = await Room.findOneAndDelete({ type : 2});
-  //   res.redirect(`/chat/${userData._id}&${userData.roll}`)
-  // } else if (roll === 'teacher') {
-  //   const userData = await Teacher.findOne({ email });
-  //   // console.log(req.params.id);
-  //   const roomData = await Room.findOneAndDelete({ type : 2});
-  //   res.redirect(`/chat/${userData._id}&${userData.roll}`)
-  // }
-
   const id = req.params.id;
   const roomData = await Room.findById({ _id: id });
-
-  console.log('grp members', roomData.userNames)
-
-  // const users = await User.find({});
   const roomUsers = roomData.userNames;
-  console.log(roomUsers)
-  // let users_data = []
-  // let users
+  let pushData = []
 
   let users = await User.find({});
-
-  // const users = await User.find({ $and: [{ name: 'guru' }] })
-  // console.log(users)
-
-  // roomData.userNames.forEach(element => {
-  //   // console.log('*',element)
-  //   users = await User.findOne({$nor:[{$and:[{'name':'sanjay'}]}]})
-  //   users_data.push(users)
-  // });
-
-  //*********************************** */
+  let popData = users
   for (let i = 0; i < roomUsers.length; i++) {
     const roomE = roomUsers[i];
-    // console.log('*', roomE)
-    // users = await User.find({$nor:[{$and:[{'name':element}]}]})
     users.forEach(element => {
-      // console.log('&',element.name)
       if (element.name === roomE) {
-        console.log('*', roomE)
-        // users.pop(roomE)
+        popData.splice(users.indexOf(element), 1)
       }
     });
-    // users_data.push(users)
 
   }
-  //**********************************************8 */
-  // console.log('users',users)
+  res.render('addMember', {
+    roomData,
+    popData
+  })
+});
 
-  // console.log(users_data)
+router.post('/addmember/:id', auth, async (req, res) => {
 
-  // const usernot = await User.find({$nor:[{$and:[{'name':'sanjay'}]}]})
-  // console.log(usernot)
-  // let users_data = []
-  // let i = 0;
-  // // console.log(roomData.userNames)
-  // users.forEach(element => {
-  //   // console.log(element.name)
-  //   // for (let i = 0; i < roomData.userNames.length; i++) {
-  //   //   // console.log('*', roomData.userNames[i]);
-  //   // console.log(element.name)
-  //   // console.log('*',roomData.userNames.length)
-  //   // }
-  //   // while (i < roomData.userNames.length) {
-  //   if (element.name !== roomData.userNames[i]) {
-  //     // users_data.push(element.name);
-  //     console.log('*',element.name)
-  //     // console.log(i)
-  //     //   }
-  //     i++;
-  //   }
+  let userIds = [];
+  let usernames = [];
+  const id = req.params.id;
+  let newIds = [];
+  if ((req.body.name).length === 24) {
+    newIds.push(req.body.name);
+  } else {
+    newIds = req.body.name
+  }
 
-  // });
+  const groupdata = await Room.findById({ _id: req.params.id })
+  userIds = groupdata.userIds;
+  usernames = groupdata.userNames;
+  for (let i = 0; i < newIds.length; i++) {
+    const newUserName = await User.findById({ _id: newIds[i] })
+    usernames.push(newUserName.name)
+  }
+  newIds.forEach(element => {
+    userIds.push(element)
+  });
 
-  // if (element.name !== roomData.userNames[i]) {
-  //   users_data.push(element.name);
+  await Room.findByIdAndUpdate({ _id: id }, { userNames: usernames })
+  const result = await Room.findByIdAndUpdate({ _id: id }, { userIds: userIds })
+  const email = req.user.email;
+  res.redirect(`/createGroup/${email}`)
+});
 
-  //   }
+router.get('/groupChatList/:id', auth, async (req, res) => {
+  let i = 0;
+  let index = []
+  const id = req.user._id.toString();
+  const userdata = req.user
+  const groupData = await Room.find({ type: 2 })
+  groupData.forEach(element => {
+    element.userIds.forEach(data => {
+      if (data === id) {
+        index.push(element)
+      }
+    });
+    i++
 
-
-  // console.log('list without grp member',users_data)
-
-  // for (const i in users) {
-  //   console.log(i)
-  //   // if (users[i].name !== roomData.userNames[i]) {
-  //     // console.log('**',roomData.userNames[i])
-  //     // console.length
-  //     // users_data.push(users[i]);
-  //   // }
-  // }
-  // users_data.forEach(element => {
-  //   console.log('*',element.name)
-  // });
-  // console.log('list without grp member',users_data.name)
-
-  // console.log('group member',roomData.userNames);
-  // roomData.userNames.forEach(element => {
-  //   console.log('*',element)
-  // });
-
-  res.status(200).send();
-  // res.render('addMember',{
-  //   roomData
-  // })
-
-
+  });
+  res.render('groupChatList', {
+    userdata,
+    index
+  })
 });
 
 router.get('/groupChatList/:id', auth, async (req, res) => {
@@ -235,7 +194,6 @@ router.get('/groupChatList/:id', auth, async (req, res) => {
       }
     });
     i++
-
   });
   res.render('groupChatList', {
     userdata,
