@@ -18,17 +18,11 @@
         <h1>Add Member</h1>
         <h3> Group Name :</h3>
         <h3>{{roomData.mainUser}}</h3>
-        {{!-- <h3><a class="btn btn-secondary" href="/student/exam/{{student.id}}"><i class="fa fa-book"></i>Take
-            Test</a></h3> --}}
-        {{!-- <h3><a class="btn btn-secondary" href="/student/score/{{student.id}}"><i class="fa fa-book"></i>Test
-            Score</a></h3> --}}
-        {{!-- <h3><a class="btn btn-secondary" href="/chat/{{student.id}}&{{student.roll}}"><i class="fa fa-book"></i>Chat</a></h3> --}}
         <table>
 
           <thead>
             <tr>
               <th>group Member :</th>
-              {{!-- <th>Add Member</th> --}}
             </tr>
           </thead>
           <tbody>
@@ -42,13 +36,10 @@
           </tbody>
         </table>
         <form action="/addmember/{{roomData._id}}" method="POST">
-
           <table>
-
             <thead>
               <tr>
                 <th>Add Member :</th>
-                {{!-- <th>Add Member</th> --}}
               </tr>
             </thead>
             <tbody>
@@ -60,19 +51,15 @@
                 </td>
               </tr>
               {{/popData}}
-              {{!-- {{#popData}}
             <tr>
               <td>
                 <input type="checkbox" id="name" name="name" value={{this.name}}>
                 <label for="name"> {{this.name}} </label><br>
               </td>
             </tr>
-            {{/popData}} --}}
             </tbody>
           </table>
-          {{!-- <a class="btn btn-success" href="#" style="color: rgb(255, 255, 255);">save</a> --}}
           <button class="btn btn-success" type="submit">save</button>
-
         </form>
       </div>
     </div>
