@@ -82,8 +82,13 @@ const getUser = async (id) => {
 }
 
 const getusersInRoom = async (room) => {
-  const users = await Chat.find({});
-  return users;
+  let usersOnline = [];
+  const users = await Chat.find({ room: room });
+  const roomData = await Room.findOne({ _id: room })
+  roomData.userNames.forEach(element => {
+    usersOnline.push({username: element})
+  });
+  return usersOnline;
 }
 
 const generateHistoryMessage = async (id, chatSize) => {
