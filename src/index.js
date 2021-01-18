@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
     }
     socket.broadcast.to(user.room).emit('message', await generateMessage(room._id, 'Admin', `${mainId.name} has joined!`));
     getusersInRoom(user.room).then((user_value) => {
-      io.emit('roomData', {
+    io.to(user.room).emit('roomData', {
         room: user.room,
         users: user_value
       });
