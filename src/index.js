@@ -54,9 +54,19 @@ io.on('connection', (socket) => {
     }
     socket.broadcast.to(user.room).emit('message', await generateMessage(room._id, 'Admin', `${mainId.name} has joined!`));
     getusersInRoom(user.room).then((user_value) => {
-    io.to(user.room).emit('roomData', {
+      let usersOnline = [];
+      let usersOffline = [];
+      user_value.forEach(element => {
+        if (element.online) {
+          usersOnline.push({ online: element.online })
+        } else if (element.offline) {
+          usersOffline.push({ offline: element.offline })
+        }
+      });
+      io.to(user.room).emit('roomData', {
         room: user.room,
-        users: user_value
+        online: usersOnline,
+        offline: usersOffline
       });
     }).catch((e) => {
       console.log(e)
@@ -86,10 +96,24 @@ io.on('connection', (socket) => {
     const id = room._id;
     const user = await removeUser(socket.id);
     if (user) {
-      io.to(user.room).emit('roomData', {
-        room: user.room,
-        users: await getusersInRoom(user.room)
-      });
+      getusersInRoom(user.room).then((user_value) => {
+        let usersOnline = [];
+        let usersOffline = [];
+        user_value.forEach(element => {
+          if (element.online) {
+            usersOnline.push({ online: element.online })
+          } else if (element.offline) {
+            usersOffline.push({ offline: element.offline })
+          }
+        });
+        io.to(user.room).emit('roomData', {
+          room: user.room,
+          online: usersOnline,
+          offline: usersOffline
+        });
+      }).catch((e) => {
+        console.log(e)
+      })
     }
   })
 })
