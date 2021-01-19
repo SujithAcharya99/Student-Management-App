@@ -83,10 +83,27 @@ const getUser = async (id) => {
 
 const getusersInRoom = async (room) => {
   let usersOnline = [];
+  let usersOffline = [];
   const users = await Chat.find({ room: room });
+  users.forEach(name => {
+    usersOnline.push({ online: name.username })
+  });
+  let size = usersOnline.length;
   const roomData = await Room.findOne({ _id: room })
-  roomData.userNames.forEach(element => {
-    usersOnline.push({username: element})
+  usersOffline = roomData.userNames;
+  let j = 0
+  for (const i in usersOnline) {
+    j = 0;
+    usersOffline.forEach(element => {
+      // console.log('?',element,j)
+      if (usersOnline[i].online === element) {
+        usersOffline.splice(j, 1)
+      }
+      j++
+    });
+  }
+  usersOffline.forEach(element => {
+    usersOnline.push({ offline: element })
   });
   return usersOnline;
 }
