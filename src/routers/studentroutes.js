@@ -208,19 +208,27 @@ router.get('/groupChat/:id', auth, async (req, res) => {
 });
 
 
-router.get('/chat_list/:user1&:user2&:roll', auth, async (req, res) => {
+router.get('/chat_list/:user1&:user2&:roll&:type', auth, async (req, res) => {
+  // console.log(req.params);
   const roll = req.params.roll;
   const reqData = req.params;
+  const type = req.params.type;
   var user1Data;
   if (roll === 'student') {
     const mainUserData = await Student.findById(req.params.user1);
     user1Data = await User.findOne({ email: mainUserData.email });
+    // console.log('user1data::',user1Data)
   } else if (roll === 'teacher') {
     const mainUserData = await Teacher.findById(req.params.user1);
     user1Data = await User.findOne({ email: mainUserData.email });
+    // console.log('user1data::', mainUserData.name)
   }
+  // console.log('user1data::', user1Data._id);
+  // console.log('user1data::', user1Data.name)
+
 
   const userdata = await User.findById(req.params.user2);
+
   let userNames = [];
   const username1 = user1Data.name;
   userNames.push(username1);
@@ -235,14 +243,17 @@ router.get('/chat_list/:user1&:user2&:roll', auth, async (req, res) => {
       userIdData.push(reqData[i])
     }
   }
+
   const userId = userIdData[0];
-  const roomExist = await Room.find({});
+  const roomExist = await Room.find({ type: type });
+
+
   let roomIds;
   let existIndex = -1
   let indexCount = 0;
   roomExist.forEach(element => {
     roomIds = element.userIds;
-    for (let i = 0; i < roomIds.length - 1; i++) {
+    for (let i = 0; i < roomIds.length - 2; i++) {
       if (userIdData[0] === roomIds[i]) {
         if (userIdData[1] === roomIds[i + 1]) {
           existIndex = indexCount;
@@ -255,9 +266,8 @@ router.get('/chat_list/:user1&:user2&:roll', auth, async (req, res) => {
     }
     indexCount++;
   });
-
   if (existIndex === -1) {
-    const roomData = new Room({ mainUser: userId, userNames: userNames, userIds: userIdData });
+    const roomData = new Room({ mainUser: userId, type: 1, userNames: userNames, userIds: userIdData });
     roomData.save();
     res.redirect(`/chat.html?username=${userId}&room=${roomData._id}`);
   } else {
