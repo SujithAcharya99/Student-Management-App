@@ -10,7 +10,6 @@
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
 </head>
 
 <body class="bg-info">
@@ -21,17 +20,50 @@
         <h1>Create Questions for test</h1>
         {{!-- {{teacher_id}} --}}
         <form action="/mcq/{{teacher_id}}" method="POST">
-          <label>studentName</label>
-          <input id="studentName" type="text" name="studentName" placeholder="studentName" required>
-          <label>Subject </label>
-          <input id="subject" type="text" name="subject" placeholder="subject" value="{{course.subject}}" required>
-          <label>teacherName </label>
-          <input id="teacherName" type="text" name="teacherName" placeholder="teacherName"
-            value="{{course.teacherName}}" required>
-          <label>Enter no of question to Add </label>
-          <input id="noOfQuestion" type="text" onkeyup="MCQquestions()" name="noOfQuestion" placeholder="noOfQuestion"
-            required>
+          <table>
+            <tr>
+              <th>
+                <label>studentName</label>
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <input id="studentName" type="text" name="studentName" placeholder="studentName" required>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <label>Subject </label>
+              </th>
+              <th>
+                <label>teacherName </label>
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <input id="subject" type="text" name="subject" placeholder="subject" value="{{course.subject}}"
+                  required>
+              </td>
+              <td>
+                <input id="teacherName" type="text" name="teacherName" placeholder="teacherName"
+                  value="{{course.teacherName}}" required>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <label>Enter no of question to Add </label>
+              </th>
+            </tr>
+            <tr>
+              <td>
+                <input id="noOfQuestion" type="text" onkeyup="MCQquestions()" name="noOfQuestion"
+                  placeholder="noOfQuestion" required>
+              </td>
+            </tr>
+          </table>
           <div id="demo"></div>
+
+
           <button type="submit">SUBMIT</button>
         </form>
       </div>
@@ -42,12 +74,26 @@
       var x = "", i;
       var num = document.getElementById("noOfQuestion").value;
       for (i = 1; i <= num; i++) {
-        x = x + "<h2>" + i + "</h2> <input id='mcq_question' type='text' name='mcq_question' placeholder='mcq_question' required><label>options </label> <input id='options' type='text' name='options' placeholder='option 1' required> <input id='options' type='text' name='options' placeholder='option 2' required> <input id='options' type='text' name='options' placeholder='option 3' required> <input id='options' type='text' name='options' placeholder='option 4' required> <label>answer </label> <input id='answer' type='text' name='answer' placeholder='answer' required>";
+        x = x + "<table><h2>" + i + "</h2> <tr><th>Question</th></tr> <tr><td><input id='mcq_question' type='text' name='mcq_question' placeholder='mcq_question' required><td> </tr> <tr> <th> <label>options </label> </th> </tr> <tr> <td> <input id='options' type='text' name='options' placeholder='option 1' required> </td> <td><input id='options' type='text' name='options' placeholder='option 2' required></td> </tr> <tr> <td> <input id='options' type='text' name='options' placeholder='option 3' required></td> <td> <input id='options' type='text' name='options' placeholder='option 4' required> </td></tr> <tr> <th> <label>answer </label> </th> </tr> <tr> <td> <input id='answer' type='text' name='answer' placeholder='answer' required> </td> </tr></table>";
       }
       document.getElementById("demo").innerHTML = x;
     }
   </script>
   {{!-- 
+
+ <table>
+            <tr> <th>Name</th> </tr>
+              <th>Age</th>
+            </tr>
+            <tr>
+              <td>
+                <input id="name" type="text" name="name" placeholder="Name" required>
+              </td>
+              <td>
+                <input id="age" type="text" name="age" placeholder="age" required>
+              </td>
+            </tr>
+
         <h2></h2> --}}
   {{!-- 
         <label>mcq_question </label>
@@ -75,4 +121,5 @@
                     <input id="answer" type="text" name="answer" placeholder="answer" required> --}}
   {{>footer}}
 </body>
+
 </html>
