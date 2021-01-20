@@ -1,9 +1,12 @@
-// console.log('inside chat.js');
-
+console.log('inside chat.js');
+// const { Chat } = require('../../src/models/chat_database');
 const socket = io();
-const {username ,room }= require('../../src/routers/studentroutes');
+// const {username ,room }= require('../../src/routers/studentroutes');
 // console.log('hii')
 // io();
+
+// const dob = require('./routers/studentroutes');
+// console.log(`${dob.value}`);
 
 //Elements
 const $messageForm = document.querySelector('#message-form');
@@ -18,11 +21,15 @@ const locatioMessageTemplate = document.querySelector('#location-message-templat
 const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML;
 
 //options
-// const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
+
+
+const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
+
 // const username = "sujith";
 // const room = "student";
 
 
+// console.log(studentRouter.value);
 
 // console.log('username is', username)
 // console.log('romm is', room)
@@ -52,12 +59,12 @@ const autoscroll = () => {
 }
 
 socket.on('message', (msg) => {
-  // console.log(msg);
+  console.log(msg);
   const html = Mustache.render(messageTemplate, {
     username: msg.username,
     msg: msg.text,
     // createdAt: msg.createdAt
-    createdAt: moment(msg.createdA).format('hh:mm a')
+    createdAt: moment(msg.createdAt).format('hh:mm a')
   });
   $messages.insertAdjacentHTML('beforeend', html);
   autoscroll();
@@ -75,12 +82,14 @@ socket.on('locationMessage', (message) => {
   autoscroll();
 })
 
-socket.on('roomData', ({ room, users }) => {
+socket.on('roomData', ({ room, online, offline }) => {
   // console.log(room);
-  // console.log(users);
+  // console.log('inside chat.js', users);
   const html = Mustache.render(sidebarTemplate, {
     room,
-    users
+    // users,
+    online,
+    offline
   })
   document.querySelector('#sidebar').innerHTML = html;
 });
@@ -142,7 +151,7 @@ $sendLocationButton.addEventListener('click', () => {
   })
 
 })
-
+// { username, room }
 socket.emit('join', { username, room }, (error) => {
   if (error) {
     alert(error);
