@@ -48,16 +48,16 @@ io.on('connection', (socket) => {
     const roomMainUser = await Room.findById({ _id: room._id });
     const count = roomMainUser.message.length;
     const limit = 8;
-    let i = 0;
+    let i = limit;
     if (count <= limit) {
-      while (i < count) {
+      while (i > 0) {
         socket.emit('message', await generateHistoryMessage(room._id, count, i));
-        i++;
+        i--;
       }
     } else {
-      while (i < limit) {
+      while (i > 0) {
         socket.emit('message', await generateHistoryMessage(room._id, count, i));
-        i++;
+        i--;
       }
     }
     socket.broadcast.to(user.room).emit('message', await generateMessage(room._id, 'Admin', `${mainId.name} has joined!`));
