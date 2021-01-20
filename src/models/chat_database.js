@@ -25,7 +25,6 @@ const chatSchema = new mongoose.Schema({
   }
 });
 
-
 const Chat = mongoose.model('Chat', chatSchema);
 const users = [];
 const addUser = async ({ id, username, room }) => {
@@ -74,8 +73,6 @@ const removeUser = async (id) => {
   }
 }
 
-
-
 const getUser = async (id) => {
   const users = await Chat.findOne({ id: id });
   return users;
@@ -108,9 +105,9 @@ const getusersInRoom = async (room) => {
   return usersOnline;
 }
 
-const generateHistoryMessage = async (id, chatSize) => {
-  const roomHistoryMessage = await Room.findById({ _id: id })
-  const messageData = roomHistoryMessage.message[chatSize]
+const generateHistoryMessage = async (id, count ,chatIndex) => {
+  const roomHistoryMessage = await Room.findById({ _id: id });
+  const messageData = roomHistoryMessage.message[(count-1) - chatIndex];
   return {
     username: messageData.username,
     text: messageData.text,
