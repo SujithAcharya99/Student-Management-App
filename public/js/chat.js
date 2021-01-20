@@ -1,12 +1,4 @@
-console.log('inside chat.js');
-// const { Chat } = require('../../src/models/chat_database');
 const socket = io();
-// const {username ,room }= require('../../src/routers/studentroutes');
-// console.log('hii')
-// io();
-
-// const dob = require('./routers/studentroutes');
-// console.log(`${dob.value}`);
 
 //Elements
 const $messageForm = document.querySelector('#message-form');
@@ -22,17 +14,8 @@ const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML;
 
 //options
 
-
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true });
 
-// const username = "sujith";
-// const room = "student";
-
-
-// console.log(studentRouter.value);
-
-// console.log('username is', username)
-// console.log('romm is', room)
 //autoscroll
 const autoscroll = () => {
   //new message element
@@ -43,7 +26,6 @@ const autoscroll = () => {
   const newMessageMargin = parseInt(newMessageStyles.marginBottom);
   const newMessageHeight = $newMessage.offsetHeight + newMessageMargin;
 
-  // console.log(newMessagemargin);
   //visible height
   const visibleHeight = $messages.offsetHeight;
 
@@ -63,14 +45,12 @@ socket.on('message', (msg) => {
   const html = Mustache.render(messageTemplate, {
     username: msg.username,
     msg: msg.text,
-    // createdAt: msg.createdAt
     createdAt: moment(msg.createdAt).format('hh:mm a')
   });
   $messages.insertAdjacentHTML('beforeend', html);
   autoscroll();
 })
 
-// socket.on('locationMessage', (url) => {
 socket.on('locationMessage', (message) => {
   console.log(message);
   const html = Mustache.render(locatioMessageTemplate, {
@@ -83,41 +63,20 @@ socket.on('locationMessage', (message) => {
 })
 
 socket.on('roomData', ({ room, online, offline }) => {
-  // console.log(room);
-  // console.log('inside chat.js', users);
   const html = Mustache.render(sidebarTemplate, {
     room,
-    // users,
     online,
     offline
   })
   document.querySelector('#sidebar').innerHTML = html;
 });
 
-// socket.on('countUpdated', (count) => {
-//     console.log('count has been updated :' + count);
-// })
-
-// document.querySelector('#increment').addEventListener('click', () => {
-//     console.log('clicked');
-//     socket.emit('increment');
-// })
-
-// document.querySelector('#message-form').addEventListener('submit', (e) => {
-
 $messageForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
   $messageFormButton.setAttribute('disabled', 'disabled');
 
-  //const sendmsg = document.querySelector('input').value;
-
-  //disable
   const sendmsg = e.target.elements.message.value;
-
-  // socket.emit('SendMessage', sendmsg, (message) =>{
-  //     console.log('the message was delivered', message);
-  // });
 
   socket.emit('SendMessage', sendmsg, (error) => {
     $messageFormButton.removeAttribute('disabled');
@@ -130,8 +89,6 @@ $messageForm.addEventListener('submit', (e) => {
   });
 })
 
-// document.querySelector('#send-location').addEventListener('click' , () => {
-
 $sendLocationButton.addEventListener('click', () => {
   if (!navigator.geolocation) {
     return alert('Geo location is not supported by your browser. Pls update your browser...');
@@ -139,8 +96,6 @@ $sendLocationButton.addEventListener('click', () => {
   $sendLocationButton.setAttribute('disabled', 'disabled');
 
   navigator.geolocation.getCurrentPosition((position) => {
-    //console.log(position);
-    // const position;
     socket.emit('sendLocation', {
       latitude: position.coords.latitude,
       longitude: position.coords.longitude
@@ -151,7 +106,6 @@ $sendLocationButton.addEventListener('click', () => {
   })
 
 })
-// { username, room }
 socket.emit('join', { username, room }, (error) => {
   if (error) {
     alert(error);
