@@ -50,6 +50,7 @@ io.on('connection', (socket) => {
     const limit = 8;
     let i = limit;
     if (count <= limit) {
+      i = count;
       while (i > 0) {
         socket.emit('message', await generateHistoryMessage(room._id, count, i));
         i--;
